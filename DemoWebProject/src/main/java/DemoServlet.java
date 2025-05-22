@@ -23,8 +23,13 @@ public class DemoServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DBMethods dbm = new DBMethods();
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		
+		DBMethods dbm = new DBMethods();
 		String name = request.getParameter("name");
 		String html = dbm.getHtml(name);
 		if(html == null) {
