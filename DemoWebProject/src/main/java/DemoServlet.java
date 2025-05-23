@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/DemoServlet")
 public class DemoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static  DBMethods dbm = new DBMethods();
        
 	
     public DemoServlet() {
@@ -23,15 +24,15 @@ public class DemoServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		
+		String name = request.getParameter("name");
+		String html  = null;
+		if(name.equals("PARTS")) {
+			html = dbm.getPARTS(name);			
+		} else if (name.equals("PART")) {
+			html = dbm.getPART(name);
 		}
 		
-		DBMethods dbm = new DBMethods();
-		String name = request.getParameter("name");
-		String html = dbm.getHtml(name);
 		if(html == null) {
 			System.out.println("No Html Content!");
 			return;
